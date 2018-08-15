@@ -39,6 +39,8 @@ module.exports = async () => {
     ...config.puppeteer,
   });
 
+  await fs.outputFile(WS_ENDPOINT_PATH, global.BROWSER.wsEndpoint());
+
   const webpackDevServerProcessCwd = getProcessForPort(servers.cdn.port());
 
   if (!webpackDevServerProcessCwd) {
@@ -66,7 +68,8 @@ module.exports = async () => {
       );
     }
 
-    global.SERVER = child_process.spawn('node', [config.server.filename], {
+    global.SERVER = child_process.spawn(config.server.command, {
+      shell: true,
       stdio: 'pipe',
       env: {
         ...process.env,
@@ -99,6 +102,4 @@ module.exports = async () => {
 
     console.log('\n');
   }
-
-  await fs.outputFile(WS_ENDPOINT_PATH, global.BROWSER.wsEndpoint());
 };
