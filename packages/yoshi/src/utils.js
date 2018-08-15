@@ -247,10 +247,6 @@ module.exports.loadConfig = () => {
   if (!fs.existsSync(configPath)) {
     // use default config
     config = {};
-
-    console.log(
-      `Could not find 'jest-yoshi.config.js' file, using default config values.`,
-    );
   }
 
   try {
