@@ -10,10 +10,10 @@ const chalk = require('chalk');
 const puppeteer = require('puppeteer');
 const child_process = require('child_process');
 const waitPort = require('wait-port');
-const { WS_ENDPOINT_PATH } = require('./constants');
-const { getProcessForPort } = require('./utils');
 const { servers } = require('yoshi/config/project');
 const { loadConfig } = require('yoshi/src/utils');
+const { WS_ENDPOINT_PATH } = require('./constants');
+const { getProcessForPort } = require('./utils');
 
 const serverLogPrefixer = () => {
   return new stream.Transform({
@@ -45,15 +45,19 @@ module.exports = async () => {
 
   if (!webpackDevServerProcessCwd) {
     throw new Error(
-      `Could not find webpack dev server running on port ${servers.cdn.port()}, please run 'npm start'.`,
+      `Could not find webpack dev server running on port ${chalk.cyan(
+        servers.cdn.port(),
+      )}, please run 'npm start'.`,
     );
   }
 
   if (webpackDevServerProcessCwd.directory !== process.cwd()) {
     throw new Error(
-      `A different process (${
-        webpackDevServerProcessCwd.directory
-      }) is already running on port '${servers.cdn.port()}', aborting.`,
+      `A different process (${chalk.cyan(
+        webpackDevServerProcessCwd.directory,
+      )}) is already running on port '${chalk.cyan(
+        servers.cdn.port(),
+      )}', aborting.`,
     );
   }
 
@@ -62,9 +66,11 @@ module.exports = async () => {
 
     if (serverProcessCwd) {
       throw new Error(
-        `A different process (${
-          serverProcessCwd.directory
-        }) is already running on port ${config.server.port}, aborting.`,
+        `A different process (${chalk.cyan(
+          serverProcessCwd.directory,
+        )}) is already running on port ${chalk.cyan(
+          config.server.port,
+        )}, aborting.`,
       );
     }
 
@@ -91,11 +97,11 @@ module.exports = async () => {
 
       if (!portFound) {
         throw new Error(
-          `Tried running '${
-            config.server.filename
-          }' but couldn't find a server on port '${
-            config.server.port
-          }' after ${timeout} miliseconds.`,
+          `Tried running '${chalk.cyan(
+            config.server.filename,
+          )}' but couldn't find a server on port '${chalk.cyan(
+            config.server.port,
+          )}' after ${chalk.cyan(timeout)} miliseconds.`,
         );
       }
     }
